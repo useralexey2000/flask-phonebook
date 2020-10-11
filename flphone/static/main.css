@@ -1,0 +1,79 @@
+:root {
+    --main-bg-color: #ffffff;
+    --main-fg-color: #dce3e5;
+    --main-font: Arial,x-locale-body,sans-serif;
+}
+
+* {
+    padding:0;
+    margin:0;
+    font-size: 1rem;
+    font: var(--main-font);
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+.main-nav {
+    background: var(--main-fg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.main-nav h1 {
+    font-size: 1.5rem;
+}
+
+.nav__list {
+    display: flex;
+}
+
+.nav__item {
+    list-style: none;
+}
+
+.nav__item a {
+    display: block;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #000;
+}
+
+.auth {
+    margin: 2rem auto;
+    padding: 1rem;
+    background: var(--main-fg-color);
+    width: 35%;
+    border: 1px solid var(--main-fg-color);
+}
+
+.auth h3 {
+    font-size: 2rem;
+    align-self: center;
+}
+
+.auth > input[type=text], .auth > input[type=password] {
+    width: 100%;
+    padding: 1rem;
+    border: 0;
+  }
+  
+.auth > input[type=submit] {
+    margin-top: 1rem;
+    width: 100%;
+    border: 0;
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.auth > input[type=submit]:hover {
+    background: var(--main-bg-color);
+}
+
+label {
+    display: block;
+    padding: 1rem;
+}

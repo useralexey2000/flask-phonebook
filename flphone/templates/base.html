@@ -1,0 +1,15 @@
+<!doctype html>
+<title {%block title %}{% endblock %}-flphone></title>
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+<nav class="main-nav">
+    <h1>Flphone</h1>
+    <ul class="nav__list">
+    </ul>
+</nav>
+<section class="content">
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</section>

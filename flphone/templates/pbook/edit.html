@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<form method="post" class="entry-form">
+    {{ form.uname.label }}
+    {{ form.uname }}
+    {{ form.fname.label }}
+    {{ form.fname }}
+    {{ form.lname.label }}
+    {{ form.lname }}
+    {{ form.dep.label }}
+    {{ form.dep }}
+    {{ form.pos.label }}
+    {{ form.pos }}
+    {{ form.phones.label }}
+    <!-- {{ form.addp }}
+    {{ form.removep }} -->
+    <a id="add-phone" href="#">add</a>
+    {% for p in form.phones %}
+        <div class="phone-item">
+        {{ p.form.phone.label }}
+        {{ p.form.phone(class_="phone-num") }}
+        </div>
+    {% endfor%}
+    {{ form.csrf_token }}
+    {{ form.submit }}
+</form>
+{% endblock %}

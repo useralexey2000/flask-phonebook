@@ -20,9 +20,9 @@
         <td>{{ item['dep'] }}</td>
         <td>{{ item['pos'] }}</td>
         <td>{{ item['phones'] }}</td>
-        <td><a href="{{ url_for('pbook.edit', id=item['id']) }}">edit</a></td>
+        <td><a href="{{ url_for('pbook.edit', id=item['_id']) }}">edit</a></td>
         <td>
-            <form action="{{ url_for('pbook.delete', id=item['id']) }}" method="post">
+            <form action="{{ url_for('pbook.delete', id=item['_id']) }}" method="post">
                 <input type="submit" value="delete">
             </form>
         </td>

@@ -22,6 +22,7 @@
         <div class="phone-item">
             {{ p.form.phone.label }}
             {{ p.form.phone(class_="phone-num") }}
+            <a class="rem-phone" href="#">remove</a>
         </div>
     {% endfor%}
     {{ form.csrf_token }}

@@ -10,27 +10,20 @@ class Contact(db.Model):
     lname = db.Column(db.String(50), nullable=False)
     dep = db.Column(db.String(150), nullable=False)
     pos = db.Column(db.String(150), nullable=False)
-    phones = db.relationship('Phone', backref='phones', lazy=True)
-    # def __init__(self, uname, fname, lname, dep, pos, phones):
-    #     self.uname = uname
-    #     self.fname = fname
-    #     self.lname = lname
-    #     self.dep = dep
-    #     self.pos = pos
-    #     self.phones = phones
+    phones = db.relationship('Phone', backref='phones', lazy=True, cascade="all, delete")
     def __repr__(self):
         return f'<Contact {self.id}>'
 
 
 class Phone(db.Model):
     __tablename__ = 'phones'
-    id = db.Column(db.Integer(), primary_key=True)
-    num = db.Column(db.Integer(), nullable=False)
+    num = db.Column(db.Integer(), primary_key=True)
     contact_id = db.Column(db.Integer, db.ForeignKey('contacts.id'), nullable=False)
-    # def __init__(self, num):
-    #     self.num = num
     def __repr__(self):
-        return f'<Phone {self.id}>'
+        return f'<Phone {self.num}>'
+    def __eq__(self, other):
+        if isinstance(other, Phone):
+            return self.num == other.num
 
 
 class User(db.Model):
@@ -48,9 +41,5 @@ class User(db.Model):
     
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
-        
-    # def __init__(self, email, password):
-    #     self.email = email
-    #     self.password = password
     def __repr__(self):
         return f'<User {self.id}>'

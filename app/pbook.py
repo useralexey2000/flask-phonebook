@@ -1,70 +1,70 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
 from .forms import PhoneForm, ContactForm
-from .db import mongo
-from bson.objectid import ObjectId
+from app import db
+from app.models import Contact, Phone, User
 
 bp = Blueprint('pbook', __name__)
 
-
 @bp.route('/')
 def index():
-    col = mongo.db.fphone
-    res = list(col.find())
-    return render_template('pbook/index.html', pbook_list=res)
+    contacts = Contact.query.all()
+    return render_template('pbook/index.html', contacts=contacts)
 
 
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
-    form  = ContactForm(request.form)   
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            col = mongo.db.fphone
-            entry = {}
-            entry['uname'] = form.uname.data
-            entry['fname'] = form.fname.data
-            entry['lname'] = form.lname.data
-            entry['dep'] = form.dep.data
-            entry['pos'] = form.pos.data
-            entry['phones'] = form.phones.data
-            col.save(entry)
-            return redirect('/')
+    form  = ContactForm(request.form)
+    
+    if form.validate_on_submit():
+        print('validate on sub')
+        phones = [Phone(num = i.num.data) for i in form.phones]
+        contact = Contact(uname = form.uname.data,
+                          fname = form.fname.data,
+                          lname = form.lname.data,
+                          dep = form.dep.data,
+                          pos = form.pos.data,
+                          phones = phones)
+        db.session.add(contact)
+        db.session.commit()
+        return redirect('/')
+
     return render_template('pbook/create-edit.html', form=form, title='phone-create')
 
 
 @bp.route('/<id>/edit', methods=('GET', 'POST'))
 def edit(id):
-    col = mongo.db.fphone
-    res = col.find_one({'_id': ObjectId(id)})
-    if not res:
+    contact = Contact.query.get(id)
+    if not contact:
         abort(404, 'the page not found.')
-    if request.method == 'POST':
-        form = ContactForm(request.form)
-        if form.validate_on_submit():
-            entry = {}
-            entry['uname'] = form.uname.data
-            entry['fname'] = form.fname.data
-            entry['lname'] = form.lname.data
-            entry['dep'] = form.dep.data
-            entry['pos'] = form.pos.data
-            entry['phones'] = form.phones.data
-            col.update_one({'_id': ObjectId(id)}, {'$set': entry })
-            return redirect('/')
-    form = ContactForm(data=res)
+    form = ContactForm(request.form)
+    if form.validate_on_submit():
+        phones = [Phone(num = i.num.data, contact_id = id) for i in form.phones]
+
+        phones_to_del = [ i for i in contact.phones if i not in phones]
+        for i in phones_to_del: db.session.delete(i)
+        phones_to_add = [i for i in phones if i not in contact.phones]
+        for i in phones_to_add: db.session.add(i)
+
+        contact.uname = form.uname.data
+        contact.fname = form.fname.data
+        contact.lname = form.lname.data
+        contact.dep = form.dep.data
+        contact.pos = form.pos.data
+        db.session.commit()
+        return redirect('/')
+
+    form = ContactForm(obj=contact)
     return render_template('pbook/create-edit.html', form=form, title='phone-edit')
 
 
 @bp.route('/<id>/delete', methods=('POST',))
 def delete(id):
-    col = mongo.db.fphone
-    res = col.find_one({'_id': ObjectId(id)})
-    if not res:
+    contact = Contact.query.get(id)
+    if not contact:
         abort(404, 'the page not found.')
-    col.delete_one({'_id': ObjectId(id)})
+    db.session.delete(contact)
+    db.session.commit()
     return redirect('/')
-    
-
-
-

@@ -15,13 +15,12 @@
     {{ form.pos.label }}
     {{ form.pos }}
     {{ form.phones.label }}
-    <!-- {{ form.addp }}
-    {{ form.removep }} -->
+    
     <a id="add-phone" href="#">add</a>
     {% for p in form.phones %}
         <div class="phone-item">
-            {{ p.form.phone.label }}
-            {{ p.form.phone(class_="phone-num") }}
+            {{ p.form.num.label }}
+            {{ p.form.num(class_="phone-num") }}
             <a class="rem-phone" href="#">remove</a>
         </div>
     {% endfor%}

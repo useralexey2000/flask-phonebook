@@ -3,7 +3,7 @@ from wtforms import StringField, IntegerField, SubmitField, FieldList, FormField
 from wtforms.validators import DataRequired, NumberRange, Length
 
 class PhoneForm(FlaskForm):
-    phone = IntegerField('phone:', [DataRequired()])
+    num = IntegerField('phone:', [DataRequired()])
     class Meta:
         csrf = False
 

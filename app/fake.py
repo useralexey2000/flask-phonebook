@@ -24,7 +24,7 @@ def contacts(count=100, phone_max=5, department_num=10):
     departments = ['department_'+ str(i) for i in range(department_num)]
     i = 0
     while i < count:
-        phones = [ Phone(num = int(fake.msisdn())) for _ in range(random.randint(0, phone_max))]
+        phones = [ Phone(num = int(fake.msisdn())) for _ in range(random.randint(1, phone_max))]
         c = Contact(uname = fake.first_name(),
                     fname = fake.first_name(),
                     lname= fake.last_name(),

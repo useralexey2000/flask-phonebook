@@ -6,7 +6,7 @@
 <a class="create-entry" href="{{ url_for('pbook.create') }}">create</a>
 <table class="phones-table">
     <thead>
-    {% if pbook_list %}
+    {% if contacts %}
         <th>user</th>
         <th>department</th>
         <th>position</th>
@@ -14,15 +14,18 @@
     {% endif%}
     </thead>
     <tbody>
-    {% for item in pbook_list %}
+    {% for item in contacts %}
     <tr>
-        <td>{{ item['lname'] }} {{ item['uname'] }} {{ item['fname'] }}</td>
-        <td>{{ item['dep'] }}</td>
-        <td>{{ item['pos'] }}</td>
-        <td>{{ item['phones'] }}</td>
-        <td><a href="{{ url_for('pbook.edit', id=item['_id']) }}">edit</a></td>
+        <td>{{ item.uname }} {{ item.lname }} {{ item.fname }}</td>
+        <td>{{ item.dep }}</td>
+        <td>{{ item.pos }}</td>
+        <td>{% for p in item.phones %}
+                {{ p.num }}
+            {% endfor %}
+        </td>
+        <td><a href="{{ url_for('pbook.edit', id=item.id) }}">edit</a></td>
         <td>
-            <form action="{{ url_for('pbook.delete', id=item['_id']) }}" method="post">
+            <form action="{{ url_for('pbook.delete', id=item.id) }}" method="post">
                 <input type="submit" value="delete">
             </form>
         </td>

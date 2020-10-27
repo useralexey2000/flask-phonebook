@@ -5,7 +5,7 @@ from wtforms.fields.html5 import EmailField
 
 
 class PhoneForm(FlaskForm):
-    phone = IntegerField('phone:', [DataRequired()])
+    num = IntegerField('phone:', [DataRequired()])
     class Meta:
         csrf = False
 

@@ -19,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function(){
                     alert("can\'t add more than 5 phones");
                     return;
                 }
-    
-                let name = "phones-" + (n+1) + "-phone";
+                /// name to process in form
+                let name = "phones-" + (n) + "-num";
                 // create node
                 let div = document.createElement("div");
                 div.setAttribute("class", "phone-item");

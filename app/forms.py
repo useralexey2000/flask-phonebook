@@ -11,10 +11,10 @@ class PhoneForm(FlaskForm):
         csrf = False
 
 class ContactForm(FlaskForm):
-    uname = StringField('first name:', [DataRequired(), Length(min=4, max=10)])
-    fname = StringField('father\'s name:', [DataRequired(), Length(min=4, max=10)])
-    lname = StringField('last name:', [DataRequired(), Length(min=4, max=20)])
-    dep = StringField('department:', [DataRequired(), Length(min=4, max=20)])
+    uname = StringField('first name:', [DataRequired(), Length(min=4, max=30)])
+    fname = StringField('father\'s name:', [DataRequired(), Length(min=4, max=30)])
+    lname = StringField('last name:', [DataRequired(), Length(min=4, max=30)])
+    dep = StringField('department:', [DataRequired(), Length(min=4, max=30)])
     pos = StringField('position:', [DataRequired(), Length(min=4, max=30)])
     phones = FieldList(FormField(PhoneForm), min_entries=1, max_entries=5)
     submit = SubmitField('save')
@@ -35,4 +35,5 @@ class RegisterForm(FlaskForm):
     def validate_email(self, field):
         if User.query.filter_by(email = field.data).first():
             raise ValidationError('email already registered')
+
 

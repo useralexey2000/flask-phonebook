@@ -3,7 +3,9 @@
 <h1>{% block title %}phone-list{% endblock %}</h1>
 
 {% block content %}
+{% if current_user.is_authenticated %}
 <a class="create-entry" href="{{ url_for('pbook.create') }}">create</a>
+{% endif %}
 <table class="phones-table">
     <thead>
     {% if contacts %}
@@ -23,12 +25,14 @@
                 {{ p.num }}
             {% endfor %}
         </td>
+        {% if current_user.is_authenticated %}
         <td><a href="{{ url_for('pbook.edit', id=item.id) }}">edit</a></td>
         <td>
             <form action="{{ url_for('pbook.delete', id=item.id) }}" method="post">
                 <input type="submit" value="delete">
             </form>
         </td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>

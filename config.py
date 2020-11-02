@@ -7,6 +7,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev'
+    SITE_ADMIN = 'admin@test.my'
 
     @staticmethod
     def init_app(app):

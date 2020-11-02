@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 from .forms import PhoneForm, ContactForm
 from app import db
 from app.models import Contact, Phone, User
+from flask_login import login_required
 
 bp = Blueprint('pbook', __name__)
 
@@ -15,6 +16,7 @@ def index():
 
 
 @bp.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     form  = ContactForm(request.form)
     
@@ -35,6 +37,7 @@ def create():
 
 
 @bp.route('/<id>/edit', methods=('GET', 'POST'))
+@login_required
 def edit(id):
     contact = Contact.query.get(id)
     if not contact:
@@ -61,6 +64,7 @@ def edit(id):
 
 
 @bp.route('/<id>/delete', methods=('POST',))
+@login_required
 def delete(id):
     contact = Contact.query.get(id)
     if not contact:

@@ -5,6 +5,14 @@
 <nav class="main-nav">
     <h1>Flphone</h1>
     <ul class="nav__list">
+        {% if current_user.is_authenticated %}
+        <li>{{ current_user.email }}</li>
+         <li><a href="{{ url_for('auth.logout') }}">loogout</a></li>
+         {% else %}
+         <li><a href="{{ url_for('auth.register') }}">register</a></li>
+         <li><a href="{{ url_for('auth.login') }}">login</a></li>
+        {% endif %}
+
     </ul>
 </nav>
 <section class="content">

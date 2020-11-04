@@ -40,6 +40,9 @@ def create_app(config_name=None):
     from app import auth
     app.register_blueprint(auth.bp)
 
+    from app import admin
+    app.register_blueprint(admin.bp)
+
     app.add_url_rule('/', endpoint='index')
 
     return app

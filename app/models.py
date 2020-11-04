@@ -1,6 +1,6 @@
 from app import db, bcrypt, login_manager
 from sqlalchemy.ext.hybrid import hybrid_property
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from flask import current_app
 
 
@@ -57,11 +57,23 @@ class User(db.Model, UserMixin):
         self.password_hash = bcrypt.generate_password_hash(password)
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
-    def can(self, access_level):
-        return self.access >= access_level
+    @property
+    def role(self):
+        return list(ACCESS.keys())[list(ACCESS.values())[self.access]]
+    @role.setter
+    def role(self, role):
+        self.access = ACCESS[role]
+    def can(self, permission):
+        return self.access >= permission
     def __repr__(self):
         return f'<User {self.id}>'
 
+"""Creating our own Anonymous clas to be able to call can method"""
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, persmission):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(id:int):

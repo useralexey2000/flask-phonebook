@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField, FieldList, FormField, PasswordField, BooleanField, ValidationError
+from wtforms import StringField, IntegerField, SubmitField, FieldList, FormField, PasswordField, BooleanField, ValidationError, SelectField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 from wtforms.fields.html5 import EmailField
 from app.models import User, ACCESS
@@ -35,5 +35,12 @@ class RegisterForm(FlaskForm):
     def validate_email(self, field):
         if User.query.filter_by(email = field.data).first():
             raise ValidationError('email already registered')
+
+
+class UserForm(FlaskForm):
+    email = EmailField('email:', [DataRequired(), Email(), Length(max=100)])
+    password = PasswordField('password:', [DataRequired(), Length(max=20)])
+    role = SelectField('role:', choices=[i for i in ACCESS.keys()])
+    submit = SubmitField('save')
 
 

@@ -33,8 +33,8 @@ def register():
     
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        user = User()
-        form.populate_obj(user)
+        user = User(email=form.email.data, password=form.password.data)
+        # form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('auth.login'))

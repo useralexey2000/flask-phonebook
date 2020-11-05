@@ -4,33 +4,51 @@
 
 {% block content %}
 <a class="create-entry" href="{{ url_for('pbook.create') }}">create</a>
+{% if contacts %}
+<ul>
+    {% if contacts.has_prev %}
+    <li><a href="{{ url_for('pbook.index', page=contacts.prev_num) }}">previous</a></li>
+    {% else %}
+    <li><a href=""></a>previous</li>
+    {% endif %}
+    <!-- All page num -->
+    {% for p in contacts.iter_pages() %}
+    <li><a href="{{ url_for('pbook.index', page=p) }}">{{ p }}</a></li>
+    {% endfor %}
+
+    {% if contacts.has_next %}
+    <li><a href="{{ url_for('pbook.index', page=contacts.next_num) }}">next</a></li>
+    {% else %}
+    <li><a href=""></a>next</li>
+    {% endif %}
+
+</ul>
 <table class="phones-table">
     <thead>
-    {% if contacts %}
         <th>user</th>
         <th>department</th>
         <th>position</th>
         <th>phones</th>
-    {% endif%}
     </thead>
     <tbody>
-    {% for item in contacts %}
-    <tr>
-        <td>{{ item.uname }} {{ item.lname }} {{ item.fname }}</td>
-        <td>{{ item.dep }}</td>
-        <td>{{ item.pos }}</td>
-        <td>{% for p in item.phones %}
+        {% for item in contacts.items %}
+        <tr>
+            <td>{{ item.uname }} {{ item.lname }} {{ item.fname }}</td>
+            <td>{{ item.dep }}</td>
+            <td>{{ item.pos }}</td>
+            <td>{% for p in item.phones %}
                 {{ p.num }}
-            {% endfor %}
-        </td>
-        <td><a href="{{ url_for('pbook.edit', id=item.id) }}">edit</a></td>
-        <td>
-            <form action="{{ url_for('pbook.delete', id=item.id) }}" method="post">
-                <input type="submit" value="delete">
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
+                {% endfor %}
+            </td>
+            <td><a href="{{ url_for('pbook.edit', id=item.id) }}">edit</a></td>
+            <td>
+                <form action="{{ url_for('pbook.delete', id=item.id) }}" method="post">
+                    <input type="submit" value="delete">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
     </tbody>
 </table>
+{% endif%}
 {% endblock%}

@@ -9,8 +9,9 @@ from app.models import Contact, Phone, User
 bp = Blueprint('pbook', __name__)
 
 @bp.route('/')
-def index():
-    contacts = Contact.query.all()
+@bp.route('/<int:page>')
+def index(page=1):
+    contacts = Contact.query.order_by(Contact.id.desc()).paginate(page, per_page=30)
     return render_template('pbook/index.html', contacts=contacts)
 
 

@@ -12,6 +12,8 @@ from flask.cli import AppGroup
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+login_manager.login_view= 'auth.login'
+
 db_cli = AppGroup('db')
 
 def create_app(config_name=None):
@@ -29,10 +31,17 @@ def create_app(config_name=None):
     
     db.init_app(app)
     bcrypt.init_app(app)
+    login_manager.init_app(app)
     app.cli.add_command(db_cli)
     
     from app import pbook
     app.register_blueprint(pbook.bp)
+
+    from app import auth
+    app.register_blueprint(auth.bp)
+
+    from app import admin
+    app.register_blueprint(admin.bp)
 
     app.add_url_rule('/', endpoint='index')
 

@@ -41,5 +41,5 @@ def contacts(count=100, phone_max=5, department_num=10):
 
 
 if __name__ == "__main__":
-    users()
+    contacts()
     

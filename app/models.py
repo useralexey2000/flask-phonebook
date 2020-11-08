@@ -1,5 +1,14 @@
-from app import db, bcrypt
+from app import db, bcrypt, login_manager
 from sqlalchemy.ext.hybrid import hybrid_property
+from flask_login import UserMixin, AnonymousUserMixin
+from flask import current_app
+
+
+ACCESS = {
+    # 'guest': 0,
+    'user': 0,
+    'admin': 1
+}
 
 
 class Contact(db.Model):
@@ -26,11 +35,19 @@ class Phone(db.Model):
             return self.num == other.num
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
+    # access = db.Column(db.Integer, default=ACCESS['user'])
+    access = db.Column(db.Integer)
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.email == current_app.config['SITE_ADMIN']:
+            self.access = ACCESS['admin']
+        else:
+            self.access = ACCESS['user']
     # @hybrid_property
     @property
     def password(self):
@@ -38,8 +55,26 @@ class User(db.Model):
     @password.setter
     def password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password)
-    
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
+    @property
+    def role(self):
+        return list(ACCESS.keys())[list(ACCESS.values())[self.access]]
+    @role.setter
+    def role(self, role):
+        self.access = ACCESS[role]
+    def can(self, permission):
+        return self.access >= permission
     def __repr__(self):
         return f'<User {self.id}>'
+
+"""Creating our own Anonymous clas to be able to call can method"""
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, persmission):
+        return False
+
+login_manager.anonymous_user = AnonymousUser
+
+@login_manager.user_loader
+def load_user(id:int):
+    return User.query.get(id)

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock %}
+
+{% block content %}
+<table class="users-table">
+    <thead>
+        <th>email</th>
+        <th>role</th>
+    </thead>
+    {% for item in users %}
+        <td>{{ item.email }}</td>
+        <td>{{ item.role }}</td>
+        <td><a href="{{ url_for('admin.user_edit', id=item.id) }}">edit</a></td>
+        <td>
+            <form action="{{ url_for('admin.user_delete', id=item.id) }}" method="post">
+                <input type="submit" value="delete">
+            </form>
+        </td>
+    {% endfor %}
+    <tr></tr>
+</table>
+
+{% endblock %}

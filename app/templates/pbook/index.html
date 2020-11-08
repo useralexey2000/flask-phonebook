@@ -13,7 +13,15 @@
     {% endif %}
     <!-- All page num -->
     {% for p in contacts.iter_pages() %}
-    <li><a href="{{ url_for('pbook.index', page=p) }}">{{ p }}</a></li>
+        {% if p is none %}
+        <li>
+            <span class="ellipsis" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">…</span>
+        </li>
+        {% elif p == contacts.page %}
+        <li class="active"><a href="#">{{ p }}</a></li>
+        {% else %}
+        <li><a href="{{ url_for('pbook.index', page=p) }}">{{ p }}</a></li>
+        {% endif %}
     {% endfor %}
 
     {% if contacts.has_next %}

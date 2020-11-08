@@ -3,12 +3,41 @@
 {% block title %} {% endblock %}
 
 {% block content %}
+{% if users %}
+<ul>
+    {% if users.has_prev %}
+    <li><a href="{{ url_for('admin.users', page=users.prev_num) }}">previous</a></li>
+    {% else %}
+    <li><a href=""></a>previous</li>
+    {% endif %}
+    <!-- All page num -->
+    {% for u in users.iter_pages() %}
+        {% if u is none %}
+        <li>
+            <span class="ellipsis" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">…</span>
+        </li>
+        {% elif p == users.page %}
+        <li class="active"><a href="#">{{ p }}</a></li>
+        {% else %}
+        <li><a href="{{ url_for('admin.users', page=u) }}">{{ u }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if users.has_next %}
+    <li><a href="{{ url_for('admin.users', page=users.next_num) }}">next</a></li>
+    {% else %}
+    <li><a href=""></a>next</li>
+    {% endif %}
+
+</ul>
+{% endif %}
+
 <table class="users-table">
     <thead>
         <th>email</th>
         <th>role</th>
     </thead>
-    {% for item in users %}
+    {% for item in users.items %}
         <td>{{ item.email }}</td>
         <td>{{ item.role }}</td>
         <td><a href="{{ url_for('admin.user_edit', id=item.id) }}">edit</a></td>

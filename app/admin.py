@@ -24,12 +24,13 @@ def permission_required(permission):
 def admin_required(f):
     return permission_required(ACCESS['admin'])(f)
 
-
 @bp.route('/users')
+@bp.route('/users/<int:page>')
 @login_required
 @admin_required
-def users():
-    users = User.query.all()
+def users(page=1):
+    # users = User.query.all()
+    users = User.query.order_by(User.id.desc()).paginate(page, per_page=30)
     return render_template('admin/users.html', users=users)
 
 @bp.route('/users/create', methods=('GET', 'POST'))

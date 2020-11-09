@@ -22,7 +22,7 @@ class ContactForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = EmailField('email:', [DataRequired(), Email()])
     password = PasswordField('password:', [DataRequired(), Length(max=20)])
-    remember_me = BooleanField('keep me logged in')
+    remember_me = BooleanField('keep me logged in:')
     submit = SubmitField('login')
 
 

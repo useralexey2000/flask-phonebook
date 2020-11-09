@@ -2,8 +2,12 @@
     --main-bg-color: #ffffff;
     --main-fg-color: #dce3e5;
     --main-font: Arial,x-locale-body,sans-serif;
+    --main-txt-color: black;
+    --main-form-color: #f2f2f2;
+    --active-bg-color: #4CAF50;
 }
 
+/* Main styles */
 * {
     padding:0;
     margin:0;
@@ -15,7 +19,14 @@
     box-sizing: border-box;
   }
 
-.main-nav {
+li { list-style: none; }
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+.main-header {
     background: var(--main-fg-color);
     display: flex;
     justify-content: space-between;
@@ -23,57 +34,105 @@
     padding: 1rem;
 }
 
-.main-nav h1 {
-    font-size: 1.5rem;
-}
+.main-heading{ font-size: 1.5rem; }
+
+.main-heading a { color:  #4CAF50; }
+
+/* Navigation */
+.main-nav { flex: 1; }
 
 .nav__list {
     display: flex;
+    padding: 0 2rem;
 }
 
-.nav__item {
-    list-style: none;
-}
+.nav__item { padding: 1rem; } 
 
-.nav__item a {
-    display: block;
-    padding: 0.5rem;
-    text-decoration: none;
-    color: #000;
-}
+/*Login/register block  */
+.auth-block .username{ color: black; }
 
-.auth {
+/* Main content */
+.content { padding: 1rem; }
+
+.main-fms {
     margin: 2rem auto;
     padding: 1rem;
-    background: var(--main-fg-color);
+    background: var(--main-form-color);
     width: 35%;
     border: 1px solid var(--main-fg-color);
 }
 
-.auth h3 {
-    font-size: 2rem;
-    align-self: center;
+.main-fms input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 0;
 }
 
-.auth > input[type=text], .auth > input[type=password] {
-    width: 100%;
-    padding: 1rem;
-    border: 0;
-  }
-  
-.auth > input[type=submit] {
-    margin-top: 1rem;
+.main-fms > input[type=submit] {
+    margin-top: 2rem;
     width: 100%;
     border: 0;
-    padding: 1rem;
+    padding: 0.5rem;
     font-size: 1rem;
-}
-
-.auth > input[type=submit]:hover {
-    background: var(--main-bg-color);
+    background: var(--main-fg-color);
 }
 
 label {
     display: block;
     padding: 1rem;
 }
+
+.main-fms > input[type=submit]:hover {
+    background: var(--active-bg-color);
+}
+
+/* Authentication forms */
+#remember_me {
+    width: 0;
+}
+  
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination__list {
+    display: flex;
+    align-items: center;
+}
+
+.pagination__list a {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+.pagination__list a.active {
+    background-color: var(--active-bg-color);
+    color: white;
+}
+
+.pagination-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tbl thead {
+    background-color: var(--main-form-color);
+}
+
+.tbl th, .tbl td {
+    padding: 0.2rem 0.5rem;
+}
+
+.delete-btn {
+    background-color: transparent;
+    border:none;
+    cursor: pointer;
+    color: blue;
+}
+
+
+.create-btn { font-size: 1.5rem; }
+

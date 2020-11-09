@@ -1,20 +1,29 @@
 <!doctype html>
 <title {%block title %}{% endblock %}-flphone></title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+      integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous"/>
 <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
-<nav class="main-nav">
-    <h1>Flphone</h1>
-    <ul class="nav__list">
+<header class="main-header">
+    <h1 class="main-heading"><a href="{{ url_for('pbook.index') }}">Flphone</a></h1>
+    <nav class="main-nav">
+        <ul class="nav__list">
+            {% if current_user.role == 'admin' %}
+            <li class="nav__item"><a href="{{ url_for('admin.users') }}">admin</a></li>
+            {% endif %}
+            <li class="nav__item"><a href="{{ url_for('pbook.index') }}">contacts</a></li>
+        </ul>
+    </nav>
+    <div class="auth-block">
         {% if current_user.is_authenticated %}
-        <li>{{ current_user.email }}</li>
-         <li><a href="{{ url_for('auth.logout') }}">loogout</a></li>
-         {% else %}
-         <li><a href="{{ url_for('auth.register') }}">register</a></li>
-         <li><a href="{{ url_for('auth.login') }}">login</a></li>
-        {% endif %}
-
-    </ul>
-</nav>
+            <a class="username" href="#">{{ current_user.email }}</a>
+             <a href="{{ url_for('auth.logout') }}">loogout</a>
+             {% else %}
+             <a href="{{ url_for('auth.register') }}">register</a>
+             <a href="{{ url_for('auth.login') }}">login</a>
+            {% endif %}
+    </div>
+</header>
 <section class="content">
     {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>

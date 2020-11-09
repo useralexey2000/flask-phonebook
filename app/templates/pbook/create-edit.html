@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<form id="create-edit-form" class="entry-form" method="post" >
+<form id="create-edit-form" class="contact-form main-fms" method="post" >
     {{ form.uname.label }}
     {{ form.uname }}
     {{ form.fname.label }}
@@ -16,12 +16,15 @@
     {{ form.pos }}
     {{ form.phones.label }}
     
-    <a id="add-phone" href="#">add</a>
+    <a id="add-phone" href="#"><i class="fas fa-plus-square"></i>
+    </a>
     {% for p in form.phones %}
-        <div class="phone-item">
-            {{ p.form.num.label }}
+    <div class="phone-item">
+        {{ p.form.num.label }}
+        <a class="rem-phone" href="#">
+            <i class="far fa-trash-alt"></i>
+        </a>
             {{ p.form.num(class_="phone-num") }}
-            <a class="rem-phone" href="#">remove</a>
         </div>
     {% endfor%}
     {{ form.csrf_token }}

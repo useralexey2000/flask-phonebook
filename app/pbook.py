@@ -1,6 +1,7 @@
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for
 )
+from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import abort
 from .forms import PhoneForm, ContactForm
 from app import db
@@ -20,7 +21,6 @@ def index(page=1):
 @login_required
 def create():
     form  = ContactForm(request.form)
-    
     if form.validate_on_submit():
         print('validate on sub')
         phones = [Phone(num = i.num.data) for i in form.phones]
@@ -31,7 +31,11 @@ def create():
                           pos = form.pos.data,
                           phones = phones)
         db.session.add(contact)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            abort(500)
         return redirect('/')
 
     return render_template('pbook/create-edit.html', form=form, title='phone-create')
@@ -43,7 +47,7 @@ def edit(id):
     contact = Contact.query.get(id)
     if not contact:
         abort(404, 'the page not found.')
-    form = ContactForm(request.form)
+    form = ContactForm(request.form, obj=contact)
     if form.validate_on_submit():
         phones = [Phone(num = i.num.data, contact_id = id) for i in form.phones]
 
@@ -57,10 +61,13 @@ def edit(id):
         contact.lname = form.lname.data
         contact.dep = form.dep.data
         contact.pos = form.pos.data
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            abort(500)
         return redirect('/')
 
-    form = ContactForm(obj=contact)
     return render_template('pbook/create-edit.html', form=form, title='phone-edit')
 
 
@@ -71,5 +78,10 @@ def delete(id):
     if not contact:
         abort(404, 'the page not found.')
     db.session.delete(contact)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        abort(500)
+        return redirect('/')
     return redirect('/')

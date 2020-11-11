@@ -26,6 +26,14 @@ a {
     color: blue;
 }
 
+.error {
+    color: red;
+}
+
+.flash {
+    color: blue;
+}
+
 .main-header {
     background: var(--main-fg-color);
     display: flex;
@@ -87,8 +95,13 @@ label {
 }
 
 /* Authentication forms */
-#remember_me {
+#remember_me, #reset_password {
     width: 0;
+}
+
+/* User form */
+.hide {
+    display: none;
 }
   
 /* Pagination */
@@ -132,7 +145,6 @@ label {
     cursor: pointer;
     color: blue;
 }
-
 
 .create-btn { font-size: 1.5rem; }
 

@@ -1,6 +1,8 @@
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for
 )
+from sqlalchemy.exc import IntegrityError
+from werkzeug.exceptions import abort
 from app.forms import LoginForm, RegisterForm
 from flask_login import login_user, logout_user, login_required
 from app.models import User
@@ -34,9 +36,13 @@ def register():
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)
-        # form.populate_obj(user)
         db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            abort(500)
+        flash('you successfuly registered account.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form, title='register')
 

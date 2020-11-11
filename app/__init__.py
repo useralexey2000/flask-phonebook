@@ -28,12 +28,15 @@ def create_app(config_name=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
+
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     app.cli.add_command(db_cli)
-    
+
+    from app import errors
+    app.register_blueprint(errors.bp)
+
     from app import pbook
     app.register_blueprint(pbook.bp)
 

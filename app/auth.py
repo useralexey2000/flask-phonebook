@@ -13,6 +13,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    """Login user"""
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
@@ -26,13 +27,14 @@ def login():
 @bp.route('/logout', methods=('GET', 'POST'))
 @login_required
 def logout():
+    """Logout logged in user"""
     logout_user()
     flash('you have been logged out.')
     return redirect('/')
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    
+    """Register user"""
     form = RegisterForm(request.form)
     if form.validate_on_submit():
         user = User(email=form.email.data, password=form.password.data)

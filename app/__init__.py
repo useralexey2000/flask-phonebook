@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-# import sys
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
@@ -13,6 +12,8 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view= 'auth.login'
+from app.models import AnonymousUser
+login_manager.anonymous_user = AnonymousUser
 
 db_cli = AppGroup('db')
 
@@ -28,7 +29,7 @@ def create_app(config_name=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
+    """Init extentions and register blueprints"""
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
@@ -52,5 +53,6 @@ def create_app(config_name=None):
 
 @db_cli.command('init')
 def init_db():
+    """Command to recreate db"""
     db.drop_all()
     db.create_all()

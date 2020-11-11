@@ -11,8 +11,11 @@ from app.forms import UserForm
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 
-"""Decorators for accessing secure data"""
+"""
+    Decorators for accessing secure data
+"""
 def permission_required(permission):
+    """Decorator for access based on permission"""
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -23,6 +26,7 @@ def permission_required(permission):
     return decorator
 
 def admin_required(f):
+    """Decorator for admin access"""
     return permission_required(ACCESS['admin'])(f)
 
 @bp.route('/users')
@@ -30,6 +34,7 @@ def admin_required(f):
 @login_required
 @admin_required
 def users(page=1):
+    """Display all registered users"""
     users = User.query.order_by(User.id.desc()).paginate(page, per_page=30)
     return render_template('admin/users.html', users=users)
 
@@ -37,6 +42,7 @@ def users(page=1):
 @login_required
 @admin_required
 def user_create():
+    """Create user"""
     form = UserForm(request.form)
     if form.validate_on_submit():
         user = User()
@@ -55,6 +61,7 @@ def user_create():
 @login_required
 @admin_required
 def user_edit(id):
+    """Edit user"""
     user = User.query.get(id)
     if not user:
         abort(404, 'the page not found.')
@@ -77,6 +84,7 @@ def user_edit(id):
 @login_required
 @admin_required
 def user_delete(id):
+    """Delite user"""
     user = User.query.get(id)
     if not user:
         abort(404, 'the page not found.')

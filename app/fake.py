@@ -1,12 +1,11 @@
-# from flask import current_app
 from faker import Faker
 import random
 from app import db
 from sqlalchemy.exc import IntegrityError
 from app.models import User, Contact, Phone
 
-# Create fake users for testing
 def users(count=10):
+    """Create fake users for testing"""
     fake = Faker()
     i = 0
     while i < count:
@@ -18,8 +17,8 @@ def users(count=10):
         except IntegrityError:
             db.session.rollback()
 
-# Create fake contacts for testing
 def contacts(count=100, phone_max=5, department_num=10):
+    """Create fake contacts for testing"""
     fake = Faker()
     departments = ['department_'+ str(i) for i in range(department_num)]
     i = 0
@@ -37,9 +36,3 @@ def contacts(count=100, phone_max=5, department_num=10):
             i += 1
         except IntegrityError:
             db.session.rollback()
-
-
-
-if __name__ == "__main__":
-    contacts()
-    

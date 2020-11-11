@@ -1,6 +1,7 @@
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for
 )
+from sqlalchemy.exc import IntegrityError
 from flask_login import current_user, login_required
 from functools import wraps
 from werkzeug.exceptions import abort
@@ -29,7 +30,6 @@ def admin_required(f):
 @login_required
 @admin_required
 def users(page=1):
-    # users = User.query.all()
     users = User.query.order_by(User.id.desc()).paginate(page, per_page=30)
     return render_template('admin/users.html', users=users)
 
@@ -42,7 +42,11 @@ def user_create():
         user = User()
         form.populate_obj(user)
         db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            abort(500)
         return redirect(url_for('admin.users'))
     return render_template('admin/user-create-edit.html', form=form, title='user-create')
 
@@ -60,7 +64,11 @@ def user_edit(id):
         user.role = form.role.data
         if form.reset_password.data:
             user.password = form.password.data
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            abort(500)
         return redirect(url_for('admin.users'))
     return render_template('admin/user-create-edit.html', form=form, title='user-edit')
 
@@ -73,5 +81,9 @@ def user_delete(id):
     if not user:
         abort(404, 'the page not found.')
     db.session.delete(user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        abort(500)
     return redirect(url_for('admin.users'))

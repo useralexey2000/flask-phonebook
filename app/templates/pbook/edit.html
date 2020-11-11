@@ -3,25 +3,21 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+{% from "_formhelpers.html" import render_field %}
+
 <form method="post" class="entry-form">
-    {{ form.uname.label }}
-    {{ form.uname }}
-    {{ form.fname.label }}
-    {{ form.fname }}
-    {{ form.lname.label }}
-    {{ form.lname }}
-    {{ form.dep.label }}
-    {{ form.dep }}
-    {{ form.pos.label }}
-    {{ form.pos }}
+    {{ render_field(form.uname) }}
+    {{ render_field(form.fname) }}
+    {{ render_field(form.lame) }}
+    {{ render_field(form.dep) }}
+    {{ render_field(form.pos) }}
     {{ form.phones.label }}
     <!-- {{ form.addp }}
     {{ form.removep }} -->
     <a id="add-phone" href="#">add</a>
     {% for p in form.phones %}
         <div class="phone-item">
-        {{ p.form.phone.label }}
-        {{ p.form.phone(class_="phone-num") }}
+        {{ render_field(form.phone, class="phone-num") }}
         </div>
     {% endfor%}
     {{ form.csrf_token }}

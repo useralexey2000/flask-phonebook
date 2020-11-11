@@ -3,14 +3,15 @@
 {% block title %}title{% endblock %}
 
 {% block content %}
-<form method="post" class="user-form main-fms">
-    
-    {{ form.email.label }}
-    {{ form.email }}
-    {{ form.password.label }}
-    {{ form.password }}
-    {{ form.role.label }}
-    {{ form.role }}
+
+{% from "_formhelpers.html" import render_field %}
+<form method="post" id="user-form" class="user-form main-fms">
+    {{ render_field(form.email) }}
+    {{ render_field(form.reset_password) }}
+    <div id="pass-block" class="hide">
+        {{ render_field(form.password) }}
+    </div>
+    {{ render_field(form.role) }}
     {{ form.csrf_token }}
     {{ form.submit }}
 </form>

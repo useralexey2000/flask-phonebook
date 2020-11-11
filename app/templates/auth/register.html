@@ -3,13 +3,12 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+
+{% from "_formhelpers.html" import render_field %}
 <form method="post" class="auth-form main-fms">
-    {{ form.email.label }}
-    {{ form.email }}
-    {{ form.password.label }}
-    {{ form.password }}
-    {{ form.password2.label }}
-    {{ form.password2 }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.password2) }}
     {{ form.csrf_token }}
     {{ form.submit }}
 </form>

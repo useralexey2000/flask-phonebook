@@ -3,28 +3,24 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+
+{% from "_formhelpers.html" import render_field %}
 <form id="create-edit-form" class="contact-form main-fms" method="post" >
-    {{ form.uname.label }}
-    {{ form.uname }}
-    {{ form.fname.label }}
-    {{ form.fname }}
-    {{ form.lname.label }}
-    {{ form.lname }}
-    {{ form.dep.label }}
-    {{ form.dep }}
-    {{ form.pos.label }}
-    {{ form.pos }}
+    {{ render_field(form.uname) }}
+    {{ render_field(form.fname) }}
+    {{ render_field(form.lname) }}
+    {{ render_field(form.dep) }}
+    {{ render_field(form.pos) }}
     {{ form.phones.label }}
     
     <a id="add-phone" href="#"><i class="fas fa-plus-square"></i>
     </a>
     {% for p in form.phones %}
     <div class="phone-item">
-        {{ p.form.num.label }}
-        <a class="rem-phone" href="#">
-            <i class="far fa-trash-alt"></i>
-        </a>
-            {{ p.form.num(class_="phone-num") }}
+        {{ render_field(p.form.num, class="phone-num") }}
+            <a class="rem-phone" href="#">
+                <i class="far fa-trash-alt"></i>
+            </a>
         </div>
     {% endfor%}
     {{ form.csrf_token }}

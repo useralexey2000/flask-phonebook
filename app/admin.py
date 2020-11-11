@@ -54,12 +54,14 @@ def user_edit(id):
     user = User.query.get(id)
     if not user:
         abort(404, 'the page not found.')
-    form = UserForm(request.form)
+    form = UserForm(request.form, obj=user)
     if form.validate_on_submit():
-        form.populate_obj(user)
+        user.email = form.email.data
+        user.role = form.role.data
+        if form.reset_password.data:
+            user.password = form.password.data
         db.session.commit()
         return redirect(url_for('admin.users'))
-    form = UserForm(obj=user)
     return render_template('admin/user-create-edit.html', form=form, title='user-edit')
 
     

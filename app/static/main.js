@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(){
 
-    let entryForm = document.getElementById("create-edit-form");
+    let contactForm = document.getElementById("create-edit-form");
     
-    if(entryForm) {
-        entryForm.addEventListener("click", function (e) {
+    if(contactForm) {
+        contactForm.addEventListener("click", function (e) {
         // remove phone elem
             // if (e.target.classList.contains("rem-phone")){
             if (e.target.closest(".rem-phone")){
@@ -40,4 +40,18 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         });
     }
+    // Set/reset password
+    let userForm = document.getElementById("user-form");
+
+    if (userForm) {
+        userForm.addEventListener("click", function(e){
+            if (e.target.id == "reset_password") {
+                let passField = document.getElementById("pass-block");
+                passField.classList.toggle("hide");
+                return;
+            }
+        });
+    }
+
 });
+

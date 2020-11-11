@@ -3,6 +3,9 @@
 {% block title %} {% endblock %}
 
 {% block content %}
+<a class="create-entry" href="{{ url_for('admin.user_create') }}">
+    <i class="create-btn fas fa-plus-square"></i>
+</a>
 {% if users %}
 <div class="pagination">
     <ul class="pagination__list">
